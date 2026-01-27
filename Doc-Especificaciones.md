@@ -1,707 +1,253 @@
-# **📄 ESPECIFICACIÓN DE REQUERIMIENTOS**
+# 📄 Especificación de Requerimientos
 
-## **Aplicación Web Comercial de Control y Gestión de Horarios Laborales**
-
-# ---
-
-# **1\. Introducción**
-
-## **1.1 Propósito**
-
-# **Este documento define los requerimientos funcionales, no funcionales y técnicos para el desarrollo de una aplicación web moderna de control horario orientada a uso comercial.**
-
-# **El sistema permitirá registrar jornadas laborales, gestionar pausas, calcular horas trabajadas y generar reportes visuales.**
-
-# ---
-
-## **1.2 Alcance**
-
-# **La aplicación será un sistema SaaS (Software as a Service) accesible vía navegador web que permitirá:**
-
-* # **Registro de entrada y salida** 
-
-* # **Gestión de pausas** 
-
-* # **Cálculo automático de horas trabajadas** 
-
-* # **Visualización de reportes** 
-
-* # **Administración de usuarios** 
-
-* # **Escalabilidad para múltiples empresas** 
-
-# ---
-
-## **1.3 Definiciones**
-
-* # **Jornada: Periodo entre check-in y check-out.** 
-
-* # **Pausa: Intervalo dentro de una jornada que no cuenta como tiempo trabajado.** 
-
-* # **MVP: Producto mínimo viable.** 
-
-* # **Multi-tenant: Arquitectura que soporta múltiples empresas aisladas.** 
-
-# ---
-
-# **2\. Visión del Producto**
-
-# **Aplicación SaaS dirigida a:**
-
-* # **Empresas pequeñas y medianas** 
-
-* # **Equipos remotos** 
-
-* # **Freelancers** 
-
-* # **Startups** 
-
-# **Modelo comercial:**
-
-* # **Plan gratuito limitado** 
-
-* # **Plan Pro por usuario** 
-
-* # **Plan Empresa** 
-
-# ---
-
-# **3\. Arquitectura General**
-
-## **3.1 Frontend**
-
-* # **Next.js** 
-
-* # **TypeScript obligatorio** 
-
-* # **TailwindCSS** 
-
-* # **Librería de gráficos (Recharts o Chart.js)** 
-
-## **3.2 Backend**
-
-* # **Supabase** 
-
-  * # **PostgreSQL** 
-
-  * # **Supabase Auth** 
-
-  * # **Row Level Security** 
-
-* # **Edge Functions (fase 2\)** 
-
-## **3.3 Arquitectura**
-
-* # **SPA con App Router** 
-
-* # **Separación por features** 
-
-* # **Servicios desacoplados** 
-
-* # **Cálculos críticos protegidos** 
-
-# ---
-
-# **4\. Tipos de Usuario**
-
-## **4.1 Usuario estándar**
-
-* # **Registra jornadas** 
-
-* # **Gestiona pausas** 
-
-* # **Visualiza reportes propios** 
-
-## **4.2 Administrador**
-
-* # **Visualiza usuarios** 
-
-* # **Consulta jornadas** 
-
-* # **Exporta datos** 
-
-* # **Suspende cuentas** 
-
-# ---
-
-# **5\. Requerimientos Funcionales**
-
-## **RF-01 Autenticación**
-
-* # **Registro con email y contraseña** 
-
-* # **Verificación de correo** 
-
-* # **Recuperación de contraseña** 
-
-* # **Cierre de sesión** 
-
-* # **Gestión de perfil** 
-
-# ---
-
-## **RF-02 Registro de Jornada**
-
-# **El sistema permitirá:**
-
-* # **Iniciar jornada (check-in)** 
-
-* # **Finalizar jornada (check-out)** 
-
-* # **Visualizar estado actual** 
-
-* # **Temporizador en tiempo real** 
-
-# **Restricción:**
-
-* # **Solo una jornada activa por usuario.** 
-
-# ---
-
-## **RF-03 Gestión de Pausas**
-
-* # **Iniciar pausa** 
-
-* # **Finalizar pausa** 
-
-* # **Múltiples pausas por jornada** 
-
-* # **Indicador visual de estado** 
-
-# ---
-
-## **RF-04 Cálculo Automático**
-
-# **Fórmula:**
-
-# **`Horas trabajadas = (Salida - Entrada) - Total pausas`**
-
-# 
-
-* # **Precisión en minutos** 
-
-* # **Manejo de múltiples pausas** 
-
-* # **Soporte para jornadas cruzando medianoche** 
-
-# ---
-
-## **RF-05 Historial**
-
-* # **Vista diaria** 
-
-* # **Vista semanal** 
-
-* # **Vista mensual** 
-
-* # **Filtro por rango de fechas** 
-
-# ---
-
-## **RF-06 Reportes**
-
-* # **Total horas trabajadas** 
-
-* # **Promedio diario** 
-
-* # **Total pausas** 
-
-* # **Gráficos visuales** 
-
-* # **Exportación CSV (MVP)** 
-
-* # **Exportación PDF (fase 2\)** 
-
-# ---
-
-## **RF-07 Panel Administrativo**
-
-* # **Gestión de usuarios** 
-
-* # **Filtro por fechas** 
-
-* # **Visualización de jornadas** 
-
-* # **Exportación de datos** 
-
-# ---
-
-# **6\. Requerimientos No Funcionales**
-
-## **RNF-01 Rendimiento**
-
-* # **Respuesta menor a 2 segundos** 
-
-* # **Cálculos en tiempo real** 
-
-## **RNF-02 Seguridad**
-
-* # **RLS obligatorio** 
-
-* # **HTTPS** 
-
-* # **Validaciones backend** 
-
-* # **Protección contra manipulación de datos** 
-
-## **RNF-03 Usabilidad**
-
-* # **Interfaz moderna** 
-
-* # **Diseño intuitivo** 
-
-* # **Feedback visual inmediato** 
-
-## **RNF-04 Escalabilidad**
-
-* # **Índices optimizados** 
-
-* # **Preparado para miles de usuarios** 
-
-* # **Preparado para multiempresa** 
-
-## **RNF-05 Disponibilidad**
-
-* # **Servicio 24/7** 
-
-* # **Infraestructura dependiente de Supabase** 
-
-# ---
-
-# **7\. Modelo de Datos**
-
-## **Tabla: profiles**
-
-* # **id (uuid PK)** 
-
-* # **full\_name** 
-
-* # **role (user/admin)** 
-
-* # **company\_id** 
-
-* # **created\_at** 
-
-# ---
-
-## **Tabla: work\_sessions**
-
-* # **id (uuid PK)** 
-
-* # **user\_id (uuid FK)** 
-
-* # **company\_id** 
-
-* # **date (date)** 
-
-* # **check\_in (timestamp)** 
-
-* # **check\_out (timestamp)** 
-
-* # **total\_minutes (integer)** 
-
-* # **status (active | paused | completed)** 
-
-* # **created\_at** 
-
-# **Índices:**
-
-* # **user\_id** 
-
-* # **date** 
-
-* # **user\_id \+ date** 
-
-# ---
-
-## **Tabla: breaks**
-
-* # **id (uuid PK)** 
-
-* # **work\_session\_id (uuid FK)** 
-
-* # **break\_start (timestamp)** 
-
-* # **break\_end (timestamp)** 
-
-* # **duration\_minutes (integer)** 
-
-# ---
-
-# **8\. Estados del Sistema**
-
-# **Una jornada puede estar en:**
-
-* # **ACTIVE** 
-
-* # **PAUSED** 
-
-* # **COMPLETED** 
-
-# **No se permitirán estados inválidos.**
-
-# ---
-
-# **9\. Definición del MVP Comercial**
-
-# **Incluye:**
-
-* # **Autenticación** 
-
-* # **Registro jornada** 
-
-* # **Gestión pausas** 
-
-* # **Dashboard** 
-
-* # **Reportes básicos** 
-
-* # **Exportación CSV** 
-
-* # **Responsive completo** 
-
-* # **Panel admin básico**
-
-# 
-
-# 
-
-# 
-
-# **10\. Requerimiento Obligatorio: Diseño Responsive**
-
-La aplicación deberá ser completamente responsive y optimizada para:
-
-* 📱 Dispositivos móviles (Mobile First)
-
-* 📲 Tablets
-
-* 💻 Escritorio
-
-* 🖥 Pantallas grandes
-
-## **Criterios obligatorios**
-
-* Diseño Mobile First.
-
-* Uso de unidades relativas (rem, %, vw, vh).
-
-* Breakpoints definidos (ejemplo):
-
-  * 640px (mobile)
-
-  * 768px (tablet)
-
-  * 1024px (desktop)
-
-  * 1280px+ (wide)
-
-* Componentes adaptativos:
-
-  * Sidebar colapsable en móvil.
-
-  * Botones full-width en móvil.
-
-  * Tablas transformadas en cards en pantallas pequeñas.
-
-  * Gráficos redimensionables automáticamente.
-
-  * Navbar adaptable.
-
-No se aceptará diseño que solo “reduzca tamaño”. Debe reorganizar layout.
+## Aplicación Web Comercial de Control y Gestión de Horarios Laborales
 
 ---
 
-# **11\. Experiencia de Usuario (UX)**
+# 1. Introducción
 
-## **Flujo del Usuario Final**
+## 1.1 Propósito
 
-1. Login
+Este documento define los requerimientos funcionales, no funcionales y técnicos para el desarrollo de una aplicación web moderna de control horario orientada a uso comercial.
 
-2. Dashboard
+El sistema permitirá registrar jornadas laborales, gestionar pausas, calcular horas trabajadas y generar reportes visuales.
 
-3. Botón principal: “Iniciar Jornada”
+## 1.2 Alcance
 
-4. Estado visible en tiempo real
+La aplicación será un sistema SaaS (Software as a Service) accesible vía navegador web que permitirá:
 
-5. Gestión de pausas
+- Registro de entrada y salida
+- Gestión de pausas
+- Cálculo automático de horas trabajadas
+- Visualización de reportes
+- Administración de usuarios
+- Escalabilidad para múltiples empresas
 
-6. Finalización
+## 1.3 Definiciones
 
-7. Vista de reporte
-
-El flujo debe ser:
-
-* Directo
-
-* Sin fricción
-
-* Máximo 2 clics para acciones principales
-
----
-
-## **Dashboard (Vista Principal)**
-
-Debe incluir:
-
-* Estado actual (Activo / En pausa / Finalizado)
-
-* Temporizador en tiempo real
-
-* Botón dinámico:
-
-  * Iniciar jornada
-
-  * Iniciar pausa
-
-  * Finalizar pausa
-
-  * Finalizar jornada
-
-* Resumen del día:
-
-  * Horas trabajadas
-
-  * Tiempo en pausas
-
-* Gráfico semanal
+- **Jornada:** Periodo entre check-in y check-out.
+- **Pausa:** Intervalo dentro de una jornada que no cuenta como tiempo trabajado.
+- **MVP:** Producto mínimo viable.
+- **Multi-tenant:** Arquitectura que soporta múltiples empresas aisladas.
 
 ---
 
-# **12\. Validaciones del Sistema**
+# 2. Visión del Producto
 
-## **Validaciones críticas**
+Aplicación SaaS dirigida a:
 
-* No permitir:
+- Empresas pequeñas y medianas
+- Equipos remotos
+- Freelancers
+- Startups
 
-  * Iniciar jornada si ya hay una activa.
+### Modelo comercial
 
-  * Finalizar pausa si no está en pausa.
-
-  * Iniciar pausa sin jornada activa.
-
-  * Finalizar jornada sin check-in.
-
-* Manejo de errores claro:
-
-  * Mensajes descriptivos
-
-  * No errores técnicos visibles al usuario
+- Plan gratuito limitado
+- Plan Pro por usuario
+- Plan Empresa
 
 ---
 
-# **13\. Reglas de Negocio**
+# 3. Arquitectura General
 
-1. Solo una jornada activa por usuario.
+## 3.1 Frontend
 
-2. Las pausas deben pertenecer a una jornada válida.
+- Next.js
+- TypeScript obligatorio
+- TailwindCSS
+- Librería de gráficos (Recharts o Chart.js)
 
-3. Todos los timestamps en UTC.
+## 3.2 Backend
 
-4. Cálculos deben realizarse en backend o función segura.
+- Supabase
+  - PostgreSQL
+  - Supabase Auth
+  - Row Level Security
+- Edge Functions (fase 2)
 
-5. No confiar en datos enviados desde frontend para cálculos finales.
+## 3.3 Arquitectura
 
----
-
-# **14\. Seguridad (Nivel Comercial)**
-
-* RLS activado en todas las tablas.
-
-* Cada usuario solo puede ver sus registros.
-
-* Admin puede ver registros de usuarios bajo su empresa.
-
-* Validaciones adicionales en Supabase Policies.
-
-* Protección contra manipulación de total\_minutes.
+- SPA con App Router
+- Separación por features
+- Servicios desacoplados
+- Cálculos críticos protegidos
 
 ---
 
-# **15\. Estrategia Comercial**
+# 4. Tipos de Usuario
 
-## **Modelo de Negocio**
+## 4.1 Usuario estándar
 
-* Plan Free:
+- Registra jornadas
+- Gestiona pausas
+- Visualiza reportes propios
 
-  * 1 usuario
+## 4.2 Administrador
 
-  * Reportes básicos
-
-  * Exportación CSV
-
-* Plan Pro:
-
-  * Usuarios ilimitados
-
-  * Panel admin
-
-  * Reportes avanzados
-
-  * Exportación PDF
-
-  * Soporte prioritario
-
-* Plan Empresa:
-
-  * Multiempresa
-
-  * API
-
-  * Integraciones
-
-  * SLA personalizado
+- Visualiza usuarios
+- Consulta jornadas
+- Exporta datos
+- Suspende cuentas
 
 ---
 
-# **16\. Roadmap Técnico**
+# 5. Requerimientos Funcionales
 
-## **Fase 1 (MVP Comercial)**
+## RF-01 Autenticación
 
-* Autenticación
+- Registro con email y contraseña
+- Verificación de correo
+- Recuperación de contraseña
+- Cierre de sesión
+- Gestión de perfil
 
-* Registro de jornada
+## RF-02 Registro de Jornada
 
-* Pausas
+El sistema permitirá:
 
-* Dashboard
+- Iniciar jornada (check-in)
+- Finalizar jornada (check-out)
+- Visualizar estado actual
+- Temporizador en tiempo real
 
-* Reportes básicos
+**Restricción:**  
+Solo una jornada activa por usuario.
 
-* Responsive completo
+## RF-03 Gestión de Pausas
 
-* Panel admin básico
+- Iniciar pausa
+- Finalizar pausa
+- Múltiples pausas por jornada
+- Indicador visual de estado
 
-## **Fase 2**
+## RF-04 Cálculo Automático
 
-* Multiempresa
+**Fórmula:**
 
-* Facturación
+`Horas trabajadas = (Salida - Entrada) - Total pausas`
 
-* Roles avanzados
+- Precisión en minutos
+- Manejo de múltiples pausas
+- Soporte para jornadas cruzando medianoche
 
-* Exportación PDF
+## RF-05 Historial
 
-* Notificaciones
+- Vista diaria
+- Vista semanal
+- Vista mensual
+- Filtro por rango de fechas
 
-* Geolocalización
+## RF-06 Reportes
 
-## **Fase 3**
+- Total horas trabajadas
+- Promedio diario
+- Total pausas
+- Gráficos visuales
+- Exportación CSV (MVP)
+- Exportación PDF (fase 2)
 
-* App móvil
+## RF-07 Panel Administrativo
 
-* API pública
-
-* Integración con nómina
-
-* Firma digital
-
----
-
-# **17\. Consideraciones Técnicas de Escalabilidad**
-
-* Diseño multi-tenant desde inicio (aunque no se active).
-
-* Tabla companies preparada.
-
-* Campo company\_id en:
-
-  * profiles
-
-  * work\_sessions
-
-* Índices compuestos (user\_id \+ date).
-
-* Preparación para paginación en reportes.
-
----
-
-# **18\. Tabla Adicional (Preparación Multiempresa)**
-
-## **companies**
-
-* id (uuid)
-
-* name
-
-* plan\_type
-
-* created\_at
+- Gestión de usuarios
+- Filtro por fechas
+- Visualización de jornadas
+- Exportación de datos
 
 ---
 
-# **19\. Métricas del Producto**
+# 6. Requerimientos No Funcionales
 
-* Usuarios activos diarios
+## RNF-01 Rendimiento
 
-* Tiempo promedio de sesión
+- Respuesta menor a 2 segundos
+- Cálculos en tiempo real
 
-* Horas registradas por empresa
+## RNF-02 Seguridad
 
-* Retención mensual
+- RLS obligatorio
+- HTTPS
+- Validaciones backend
+- Protección contra manipulación de datos
 
-* Tasa de conversión Free → Pro
+## RNF-03 Usabilidad
 
----
+- Interfaz moderna
+- Diseño intuitivo
+- Feedback visual inmediato
 
-# **20\. Criterios de Aceptación**
+## RNF-04 Escalabilidad
 
-El sistema se considerará listo para producción cuando:
+- Índices optimizados
+- Preparado para miles de usuarios
+- Preparado para multiempresa
 
-* ✔ Registro de jornada sin errores
+## RNF-05 Disponibilidad
 
-* ✔ Cálculo correcto en múltiples pausas
-
-* ✔ Responsive funcional en móvil real
-
-* ✔ RLS probado con múltiples usuarios
-
-* ✔ Reportes exportables funcionando
-
-* ✔ Validaciones completas
-
----
-
-# **21\. Estructura Final de Proyecto (Confirmación Profesional)**
-
-`/control-horario-app`  
-`│`  
-`├── public/`  
-`│   ├── images/`  
-`│   ├── icons/`  
-`│   └── favicon.ico`  
-`│`  
-`├── src/`  
-`│   ├── app/`  
-`│   ├── components/`  
-`│   ├── features/`  
-`│   ├── lib/`  
-`│   ├── hooks/`  
-`│   ├── services/`  
-`│   ├── types/`  
-`│   ├── styles/`  
-`│   └── middleware.ts`  
-`│`  
-`├── .env.local`  
-`├── package.json`  
-`├── tsconfig.json`  
-`└── README.md`
+- Servicio 24/7
+- Infraestructura dependiente de Supabase
 
 ---
 
-# **22\. Conclusión Técnica**
+# 7. Modelo de Datos
 
-Este sistema:
+## Tabla: profiles
 
-* Está preparado para ser comercial.
+- id (uuid PK)
+- full_name
+- role (user/admin)
+- company_id
+- created_at
 
-* Es escalable.
+## Tabla: work_sessions
 
-* Está pensado como SaaS.
+- id (uuid PK)
+- user_id (uuid FK)
+- company_id
+- date (date)
+- check_in (timestamp)
+- check_out (timestamp)
+- total_minutes (integer)
+- status (active | paused | completed)
+- created_at
 
-* Tiene base para multiempresa.
+**Índices:**
 
-* Cumple principios de arquitectura moderna.
+- user_id
+- date
+- user_id + date
 
-* Está preparado para crecimiento.
+## Tabla: breaks
 
+- id (uuid PK)
+- work_session_id (uuid FK)
+- break_start (timestamp)
+- break_end (timestamp)
+- duration_minutes (integer)
+
+---
+
+# 8. Estados del Sistema
+
+Una jornada puede estar en:
+
+- ACTIVE
+- PAUSED
+- COMPLETED
+
+No se permitirán estados inválidos.
+
+---
+
+# 9. Definición del MVP Comercial
+
+Incluye:
+
+- Autenticación
+- Registro jornada
+- Gestión pausas
+- Dashboard
+- Reportes básicos
+- Exportación CSV
+- Responsive completo
+- Panel admin básico
