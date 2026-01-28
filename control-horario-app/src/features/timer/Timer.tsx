@@ -36,6 +36,10 @@ export function Timer({ initialSession, onSessionChange }: TimerProps) {
             interval = setInterval(() => {
                 setElapsedSeconds(prev => prev + 1);
             }, 1000);
+        } else if (session?.status === 'paused') {
+            // When paused, we don't increment. 
+            // In a real app with backend, we would fetch the accumulated time.
+            // For this mock, we rely on the state preserving the last value or calculating from breaks if available.
         }
 
         return () => clearInterval(interval);

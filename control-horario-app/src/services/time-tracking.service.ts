@@ -19,11 +19,18 @@ export const TimeTrackingService = {
             throw new Error('Session already active');
         }
 
+        const todayStr = new Date().toISOString().split('T')[0];
+        const existingSession = sessions.find(s => s.date === todayStr && s.user_id === userId);
+
+        if (existingSession) {
+            throw new Error('Ya has registrado una jornada el día de hoy. Inténtalo mañana.');
+        }
+
         const newSession: WorkSession = {
             id: `sess_${Date.now()}`,
             user_id: userId,
             company_id: 'comp_123',
-            date: new Date().toISOString().split('T')[0],
+            date: todayStr,
             check_in: new Date().toISOString(),
             status: 'active',
             total_minutes: 0,
@@ -84,8 +91,20 @@ export const TimeTrackingService = {
         return completedSession;
     },
 
-    async getHistory(): Promise<WorkSession[]> {
+    async getHistory(month?: number, year?: number): Promise<WorkSession[]> {
         await new Promise(resolve => setTimeout(resolve, 500));
-        return sessions;
+
+        let filteredSessions = sessions;
+
+        if (month !== undefined && year !== undefined) {
+            filteredSessions = sessions.filter(s => {
+                const d = new Date(s.date);
+                // Javascript months are 0-indexed, but usually we pass 1-indexed from UI
+                // Let's assume input is 0-indexed to match getMonth()
+                return d.getMonth() === month && d.getFullYear() === year;
+            });
+        }
+
+        return filteredSessions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     }
 };
