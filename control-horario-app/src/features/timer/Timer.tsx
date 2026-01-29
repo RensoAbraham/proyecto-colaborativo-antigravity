@@ -19,11 +19,19 @@ export function Timer({ initialSession, onSessionChange }: TimerProps) {
     useEffect(() => {
         setSession(initialSession);
 
-        if (initialSession?.status === 'active' && initialSession.check_in) {
-            // Calculate initial elapsed time
-            const startTime = new Date(initialSession.check_in).getTime();
-            const now = new Date().getTime();
-            setElapsedSeconds(Math.floor((now - startTime) / 1000));
+        if (initialSession) {
+            const accumulated = initialSession.accumulated_seconds || 0;
+
+            if (initialSession.status === 'active' && initialSession.check_in) {
+                // Active: Accumulated + (Now - CheckIn)
+                const startTime = new Date(initialSession.check_in).getTime();
+                const now = new Date().getTime();
+                const currentDelta = Math.floor((now - startTime) / 1000);
+                setElapsedSeconds(accumulated + currentDelta);
+            } else {
+                // Paused or Completed: Just show accumulated
+                setElapsedSeconds(accumulated);
+            }
         } else {
             setElapsedSeconds(0);
         }
@@ -133,7 +141,8 @@ export function Timer({ initialSession, onSessionChange }: TimerProps) {
                         <button
                             onClick={handleStart}
                             disabled={loading}
-                            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full font-bold shadow-lg shadow-blue-900/20 transition-all hover:scale-105"
+                            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3
+                            rounded-full font-bold shadow-lg shadow-blue-900/20 transition-all hover:scale-105"
                         >
                             <Play className="w-5 h-5 fill-current" />
                             Iniciar Jornada
@@ -144,7 +153,8 @@ export function Timer({ initialSession, onSessionChange }: TimerProps) {
                                 <button
                                     onClick={handlePause}
                                     disabled={loading}
-                                    className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-full font-bold shadow-lg shadow-amber-900/20 transition-all hover:scale-105"
+                                    className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white px-6 py-3
+                                    rounded-full font-bold shadow-lg shadow-amber-900/20 transition-all hover:scale-105"
                                 >
                                     <Pause className="w-5 h-5 fill-current" />
                                     Pausar
@@ -153,7 +163,8 @@ export function Timer({ initialSession, onSessionChange }: TimerProps) {
                                 <button
                                     onClick={handleResume}
                                     disabled={loading}
-                                    className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-bold shadow-lg shadow-green-900/20 transition-all hover:scale-105"
+                                    className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3
+                                    rounded-full font-bold shadow-lg shadow-green-900/20 transition-all hover:scale-105"
                                 >
                                     <Play className="w-5 h-5 fill-current" />
                                     Reanudar
@@ -163,7 +174,8 @@ export function Timer({ initialSession, onSessionChange }: TimerProps) {
                             <button
                                 onClick={handleStop}
                                 disabled={loading}
-                                className="flex items-center gap-2 bg-slate-200 hover:bg-red-100 hover:text-red-600 text-slate-700 px-6 py-3 rounded-full font-bold transition-all"
+                                className="flex items-center gap-2 bg-slate-200 hover:bg-red-100 hover:text-red-600 text-slate-700
+                                px-6 py-3 rounded-full font-bold transition-all"
                             >
                                 <Square className="w-5 h-5 fill-current" />
                                 Finalizar

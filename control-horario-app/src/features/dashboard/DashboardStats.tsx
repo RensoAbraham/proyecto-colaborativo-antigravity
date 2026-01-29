@@ -6,9 +6,10 @@ import { WorkSession } from '@/types';
 interface StatsProps {
     currentSession: WorkSession | null;
     todayMinutes: number;
+    todayBreaks: number;
 }
 
-export function DashboardStats({ currentSession, todayMinutes }: StatsProps) {
+export function DashboardStats({ currentSession, todayMinutes, todayBreaks }: StatsProps) {
     const formatMins = (mins: number) => {
         const h = Math.floor(mins / 60);
         const m = mins % 60;
@@ -37,7 +38,7 @@ export function DashboardStats({ currentSession, todayMinutes }: StatsProps) {
                     <div>
                         <p className="text-sm font-medium text-slate-500">Pausas</p>
                         <h3 className="text-2xl font-bold text-slate-900">
-                            {currentSession?.breaks.length || 0}
+                            {todayBreaks}
                         </h3>
                     </div>
                 </div>

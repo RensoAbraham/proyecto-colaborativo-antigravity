@@ -34,6 +34,7 @@ export const TimeTrackingService = {
             check_in: new Date().toISOString(),
             status: 'active',
             total_minutes: 0,
+            accumulated_seconds: 0,
             breaks: [],
         };
 
@@ -48,10 +49,27 @@ export const TimeTrackingService = {
             throw new Error('Session not found or mismatch');
         }
 
-        // In a real app we would add a break record here
+        // Calculate time since last check_in/resume
+        const now = new Date();
+        const lastStart = new Date(currentSession.check_in); // This acts as the last "resume" time in this logic
+        const secondsSinceStart = Math.floor((now.getTime() - lastStart.getTime()) / 1000);
+
+        const newAccumulated = (currentSession.accumulated_seconds || 0) + secondsSinceStart;
+
+        // Add a break record
+        const newBreak = {
+            id: `break_${Date.now()}`,
+            session_id: sessionId,
+            start_time: now.toISOString(),
+            duration_minutes: 0 // Will be calculated on resume/stop if needed
+        };
+
         currentSession = {
             ...currentSession,
             status: 'paused',
+            accumulated_seconds: newAccumulated,
+            total_minutes: Math.floor(newAccumulated / 60), // Sync total_minutes
+            breaks: [...currentSession.breaks, newBreak]
         };
 
         return currentSession;
@@ -64,8 +82,10 @@ export const TimeTrackingService = {
             throw new Error('Session not found or mismatch');
         }
 
+        // Reset check_in to NOW so we calculate delta from this new point
         currentSession = {
             ...currentSession,
+            check_in: new Date().toISOString(),
             status: 'active',
         };
 
@@ -79,10 +99,22 @@ export const TimeTrackingService = {
             throw new Error('Session not found or mismatch');
         }
 
+        let finalAccumulated = currentSession.accumulated_seconds || 0;
+
+        // If trying to stop while active, add the remaining time
+        if (currentSession.status === 'active') {
+            const now = new Date();
+            const lastStart = new Date(currentSession.check_in);
+            const secondsSinceStart = Math.floor((now.getTime() - lastStart.getTime()) / 1000);
+            finalAccumulated += secondsSinceStart;
+        }
+
         const completedSession = {
             ...currentSession,
             check_out: new Date().toISOString(),
             status: 'completed' as SessionStatus,
+            accumulated_seconds: finalAccumulated,
+            total_minutes: Math.floor(finalAccumulated / 60)
         };
 
         sessions = [completedSession, ...sessions];
