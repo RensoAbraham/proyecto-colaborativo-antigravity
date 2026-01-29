@@ -20,7 +20,7 @@ export function DashboardStats({ currentSession, todayMinutes, todayBreaks }: St
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="flex items-center gap-4">
-                    <div className="p-3 bg-blue-100 rounded-lg text-blue-600">
+                    <div className="p-3 bg-blue-900/30 rounded-lg text-blue-400">
                         <Clock className="w-6 h-6" />
                     </div>
                     <div>
@@ -32,7 +32,7 @@ export function DashboardStats({ currentSession, todayMinutes, todayBreaks }: St
 
             <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="flex items-center gap-4">
-                    <div className="p-3 bg-amber-100 rounded-lg text-amber-600">
+                    <div className="p-3 bg-amber-900/30 rounded-lg text-amber-400">
                         <Coffee className="w-6 h-6" />
                     </div>
                     <div>
@@ -46,7 +46,7 @@ export function DashboardStats({ currentSession, todayMinutes, todayBreaks }: St
 
             <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="flex items-center gap-4">
-                    <div className="p-3 bg-green-100 rounded-lg text-green-600">
+                    <div className="p-3 bg-green-900/30 rounded-lg text-green-400">
                         <Activity className="w-6 h-6" />
                     </div>
                     <div>
@@ -60,7 +60,7 @@ export function DashboardStats({ currentSession, todayMinutes, todayBreaks }: St
 
             <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="flex items-center gap-4">
-                    <div className="p-3 bg-indigo-100 rounded-lg text-indigo-600">
+                    <div className="p-3 bg-indigo-900/30 rounded-lg text-indigo-400">
                         <TrendingUp className="w-6 h-6" />
                     </div>
                     <div>

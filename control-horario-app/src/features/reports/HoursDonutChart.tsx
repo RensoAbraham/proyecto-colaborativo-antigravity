@@ -12,7 +12,7 @@ export function HoursDonutChart({ workedHours, breakHours, targetHours }: HoursD
     const total = workedHours + breakHours;
     const effectiveTarget = Math.max(targetHours, total, 1);
     const remainingHours = Math.max(0, effectiveTarget - total);
-    
+
     const data = [
         { name: 'Horas Trabajadas', value: workedHours, color: '#3b82f6' },
         { name: 'Tiempo en Pausas', value: breakHours, color: '#f59e0b' },
@@ -62,7 +62,7 @@ export function HoursDonutChart({ workedHours, breakHours, targetHours }: HoursD
                         </Pie>
                         <Tooltip
                             formatter={(value: number, name: string) => [
-                                `${formatValue(value)} (${getPercentage(value)}%)`, 
+                                `${formatValue(value)} (${getPercentage(value)}%)`,
                                 name
                             ]}
                             contentStyle={{
@@ -75,16 +75,16 @@ export function HoursDonutChart({ workedHours, breakHours, targetHours }: HoursD
                     </PieChart>
                 </ResponsiveContainer>
             </div>
-            
+
             {/* Custom legend inside the component */}
             <div className="flex flex-wrap justify-center gap-4 mt-2 pb-2">
                 {data.map((item, index) => (
                     <div key={index} className="flex items-center gap-2">
-                        <div 
-                            className="w-3 h-3 rounded-full" 
+                        <div
+                            className="w-3 h-3 rounded-full"
                             style={{ backgroundColor: item.color }}
                         />
-                        <span className="text-xs text-slate-600">
+                        <span className="text-xs text-slate-500">
                             {item.name} <span className="font-semibold">({getPercentage(item.value)}%)</span>
                         </span>
                     </div>

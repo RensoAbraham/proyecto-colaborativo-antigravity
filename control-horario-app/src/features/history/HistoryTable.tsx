@@ -15,7 +15,7 @@ export function HistoryTable({ sessions }: HistoryTableProps) {
     return (
         <div className="w-full overflow-auto rounded-lg border border-slate-200 shadow-sm bg-white max-h-[600px]">
             <table className="w-full text-left text-sm">
-                <thead className="bg-slate-50 text-slate-700 font-bold sticky top-0 z-10">
+                <thead className="bg-slate-50 text-slate-500 font-bold sticky top-0 z-10">
                     <tr>
                         <th className="px-6 py-4 border-b border-slate-200">DÍA</th>
                         <th className="px-6 py-4 border-b border-slate-200">FECHA</th>
@@ -78,7 +78,7 @@ export function HistoryTable({ sessions }: HistoryTableProps) {
                                     <td className="px-6 py-4 font-medium text-slate-900 border-r border-slate-100">
                                         {capitalize(format(dateObj, 'EEEE', { locale: es }))}
                                     </td>
-                                    <td className="px-6 py-4 text-slate-600 border-r border-slate-100">
+                                    <td className="px-6 py-4 text-slate-500 border-r border-slate-100">
                                         {format(dateObj, 'dd/MM/yyyy')}
                                     </td>
                                     <td className="px-6 py-4 border-r border-slate-100">
@@ -86,13 +86,13 @@ export function HistoryTable({ sessions }: HistoryTableProps) {
                                             {statusText}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 text-slate-600 border-r border-slate-100">
+                                    <td className="px-6 py-4 text-slate-500 border-r border-slate-100">
                                         {checkIn ? format(checkIn, 'HH:mm:ss') : '--:--:--'}
                                     </td>
-                                    <td className="px-6 py-4 text-slate-600 border-r border-slate-100">
+                                    <td className="px-6 py-4 text-slate-500 border-r border-slate-100">
                                         {checkOut ? format(checkOut, 'HH:mm:ss') : '--:--:--'}
                                     </td>
-                                    <td className="px-6 py-4 text-slate-900 font-bold">
+                                    <td className="px-6 py-4 text-slate-700 font-bold">
                                         {totalTimeText}
                                     </td>
                                 </tr>

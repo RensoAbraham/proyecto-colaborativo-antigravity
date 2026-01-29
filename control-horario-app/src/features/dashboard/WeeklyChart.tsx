@@ -32,8 +32,14 @@ export function WeeklyChart() {
                         tickFormatter={(value) => `${value}h`}
                     />
                     <Tooltip
-                        cursor={{ fill: '#f1f5f9' }}
-                        contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                        cursor={{ fill: '#334155' }}
+                        contentStyle={{
+                            borderRadius: '8px',
+                            border: 'none',
+                            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.5)',
+                            backgroundColor: '#1e293b',
+                            color: '#fff'
+                        }}
                     />
                     <Bar dataKey="hours" radius={[4, 4, 0, 0]}>
                         {data.map((entry, index) => (

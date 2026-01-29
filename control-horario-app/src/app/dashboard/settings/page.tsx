@@ -1,14 +1,14 @@
 'use client';
 
-import { 
-    User, 
-    Bell, 
-    Shield, 
-    Monitor, 
-    Save, 
-    Moon, 
-    Globe, 
-    Mail, 
+import {
+    User,
+    Bell,
+    Shield,
+    Monitor,
+    Save,
+    Moon,
+    Globe,
+    Mail,
     Smartphone,
     Layout,
     Camera
@@ -55,9 +55,9 @@ export default function SettingsPage() {
     const renderAvatar = () => {
         if (settings.profile.avatar && settings.profile.avatar.startsWith('data:')) {
             return (
-                <img 
-                    src={settings.profile.avatar} 
-                    alt="Avatar" 
+                <img
+                    src={settings.profile.avatar}
+                    alt="Avatar"
                     className="w-full h-full object-cover"
                 />
             );
@@ -79,11 +79,10 @@ export default function SettingsPage() {
                 </div>
                 <button
                     onClick={handleSave}
-                    className={`flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-all ${
-                        saved 
+                    className={`flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-all ${saved
                         ? 'bg-green-600 text-white shadow-lg shadow-green-200'
                         : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200'
-                    }`}
+                        }`}
                 >
                     {saved ? (
                         <>
@@ -100,18 +99,18 @@ export default function SettingsPage() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                
+
                 {/* Columna Izquierda: Perfil y Preferencias Generales */}
                 <div className="lg:col-span-2 space-y-6">
-                    
+
                     {/* Perfil */}
-                    <SettingsCard 
-                        title="Perfil de Usuario" 
+                    <SettingsCard
+                        title="Perfil de Usuario"
                         description="Actualiza tu información personal y rol."
                         icon={<User size={20} />}
                     >
                         <div className="flex flex-col sm:flex-row gap-6 items-start">
-                           <div className="flex flex-col items-center gap-3">
+                            <div className="flex flex-col items-center gap-3">
                                 <div className="relative group cursor-pointer" onClick={handleAvatarClick}>
                                     <div className="w-24 h-24 rounded-full border-4 border-white shadow-md overflow-hidden flex items-center justify-center">
                                         {renderAvatar()}
@@ -123,53 +122,53 @@ export default function SettingsPage() {
                                         <User size={14} />
                                     </button>
                                 </div>
-                                <input 
-                                    type="file" 
-                                    ref={fileInputRef} 
-                                    className="hidden" 
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    className="hidden"
                                     accept="image/*"
                                     onChange={handleFileChange}
                                 />
                                 <span className="text-xs text-slate-400">Click para cambiar (max 2MB)</span>
-                           </div>
+                            </div>
 
-                           <div className="flex-1 w-full grid grid-cols-1 gap-4">
+                            <div className="flex-1 w-full grid grid-cols-1 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Nombre Completo</label>
-                                    <input 
-                                        type="text" 
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nombre Completo</label>
+                                    <input
+                                        type="text"
                                         value={settings.profile.name}
                                         onChange={(e) => updateProfile('name', e.target.value)}
-                                        className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                                        className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/50 outline-none transition-all bg-white dark:bg-slate-950 text-slate-900 dark:text-white"
                                     />
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
-                                        <input 
-                                            type="email" 
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Email</label>
+                                        <input
+                                            type="email"
                                             value={settings.profile.email}
                                             disabled
-                                            className="w-full px-4 py-2 rounded-lg border border-slate-200 bg-slate-50 text-slate-500 cursor-not-allowed"
+                                            className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400 cursor-not-allowed"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-1">Cargo / Rol</label>
-                                        <input 
-                                            type="text" 
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Cargo / Rol</label>
+                                        <input
+                                            type="text"
                                             value={settings.profile.role}
                                             onChange={(e) => updateProfile('role', e.target.value)}
-                                            className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                                            className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/50 outline-none transition-all bg-white dark:bg-slate-950 text-slate-900 dark:text-white"
                                         />
                                     </div>
                                 </div>
-                           </div>
+                            </div>
                         </div>
                     </SettingsCard>
 
                     {/* Notificaciones */}
-                    <SettingsCard 
-                        title="Notificaciones" 
+                    <SettingsCard
+                        title="Notificaciones"
                         description="Elige cómo y cuándo quieres que te contactemos."
                         icon={<Bell size={20} />}
                     >
@@ -185,12 +184,12 @@ export default function SettingsPage() {
                                         <p className="text-sm text-slate-500">Recibe actualizaciones importantes en tu correo.</p>
                                     </div>
                                 </div>
-                                <ToggleSwitch 
-                                    checked={settings.notifications.email} 
+                                <ToggleSwitch
+                                    checked={settings.notifications.email}
                                     onChange={() => toggleNotification('email')}
                                 />
                             </div>
-                            
+
                             <div className="flex items-center justify-between py-2 pt-4">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-purple-50 text-purple-600 rounded-lg">
@@ -201,8 +200,8 @@ export default function SettingsPage() {
                                         <p className="text-sm text-slate-500">Notificaciones en tiempo real en tu navegador.</p>
                                     </div>
                                 </div>
-                                <ToggleSwitch 
-                                    checked={settings.notifications.push} 
+                                <ToggleSwitch
+                                    checked={settings.notifications.push}
                                     onChange={() => toggleNotification('push')}
                                 />
                             </div>
@@ -217,8 +216,8 @@ export default function SettingsPage() {
                                         <p className="text-sm text-slate-500">Envía un reporte de productividad cada lunes.</p>
                                     </div>
                                 </div>
-                                <ToggleSwitch 
-                                    checked={settings.notifications.weeklyReport} 
+                                <ToggleSwitch
+                                    checked={settings.notifications.weeklyReport}
                                     onChange={() => toggleNotification('weeklyReport')}
                                 />
                             </div>
@@ -229,43 +228,43 @@ export default function SettingsPage() {
 
                 {/* Columna Derecha: Preferencias y Seguridad */}
                 <div className="space-y-6">
-                    
+
                     {/* Preferencias de Interface */}
-                    <SettingsCard 
-                        title="Apariencia" 
+                    <SettingsCard
+                        title="Apariencia"
                         icon={<Monitor size={20} />}
                         className="h-fit"
                     >
                         <div className="space-y-5">
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2 text-slate-700">
+                                <div className="flex items-center gap-2 text-slate-500">
                                     <Moon size={16} />
                                     <span className="font-medium">Modo Oscuro</span>
                                 </div>
-                                <ToggleSwitch 
-                                    checked={settings.preferences.theme === 'dark'} 
-                                    onChange={() => togglePreference('theme')} 
+                                <ToggleSwitch
+                                    checked={settings.preferences.theme === 'dark'}
+                                    onChange={() => togglePreference('theme')}
                                     label={settings.preferences.theme === 'dark' ? 'On' : 'Off'}
                                 />
                             </div>
-                            
+
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2 text-slate-700">
+                                <div className="flex items-center gap-2 text-slate-500">
                                     <Layout size={16} />
                                     <span className="font-medium">Modo Compacto</span>
                                 </div>
-                                <ToggleSwitch 
-                                    checked={settings.preferences.compactMode} 
+                                <ToggleSwitch
+                                    checked={settings.preferences.compactMode}
                                     onChange={() => togglePreference('compactMode')}
                                 />
                             </div>
 
                             <div>
-                                <div className="flex items-center gap-2 text-slate-700 mb-2">
+                                <div className="flex items-center gap-2 text-slate-500 mb-2">
                                     <Globe size={16} />
                                     <span className="font-medium">Idioma</span>
                                 </div>
-                                <select 
+                                <select
                                     className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-blue-100 outline-none text-sm transition-colors"
                                     value={settings.preferences.language}
                                     onChange={(e) => changeLanguage(e.target.value as 'es' | 'en' | 'pt')}
@@ -277,7 +276,7 @@ export default function SettingsPage() {
                             </div>
                         </div>
                     </SettingsCard>
-                    
+
                     {/* Seguridad (mantener igual) */}
                     <SettingsCard title="Seguridad" icon={<Shield size={20} />} className="h-fit">
                         <div className="space-y-4">

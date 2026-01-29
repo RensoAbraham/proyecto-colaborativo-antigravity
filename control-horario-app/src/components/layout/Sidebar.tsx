@@ -9,7 +9,6 @@ const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Historial', href: '/dashboard/history', icon: Clock },
     { name: 'Reportes', href: '/dashboard/reports', icon: BarChart3 },
-    { name: 'Equipo', href: '/dashboard/team', icon: Users },
     { name: 'Configuración', href: '/dashboard/settings', icon: Settings },
 ];
 

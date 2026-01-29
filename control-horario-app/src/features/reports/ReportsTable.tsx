@@ -79,7 +79,7 @@ export function ReportsTable({ sessions, targetHours = 8 }: ReportsTableProps) {
                 <div className="grid grid-cols-3 gap-2 text-center">
                     <div className="bg-slate-50 rounded-lg p-2">
                         <p className="text-xs text-slate-500">Horas</p>
-                        <p className="font-bold text-slate-900">{hours.toFixed(1)}h</p>
+                        <p className="font-bold text-slate-700">{hours.toFixed(1)}h</p>
                     </div>
                     <div className="bg-slate-50 rounded-lg p-2">
                         <p className="text-xs text-slate-500">Pausas</p>
@@ -98,7 +98,7 @@ export function ReportsTable({ sessions, targetHours = 8 }: ReportsTableProps) {
         <>
             {/* Inject CSS for custom scrollbar */}
             <style dangerouslySetInnerHTML={{ __html: scrollContainerHoverStyle }} />
-            
+
             {/* Mobile view - cards */}
             <div className="md:hidden space-y-3">
                 {sessions.length === 0 ? (
@@ -113,12 +113,12 @@ export function ReportsTable({ sessions, targetHours = 8 }: ReportsTableProps) {
             </div>
 
             {/* Desktop view - table */}
-            <div 
+            <div
                 className="reports-table-scroll hidden md:block w-full overflow-auto rounded-lg border border-slate-200 shadow-sm bg-white max-h-[400px]"
                 style={scrollContainerStyle}
             >
                 <table className="w-full text-left text-sm">
-                    <thead className="bg-slate-50 text-slate-700 font-bold sticky top-0 z-10">
+                    <thead className="bg-slate-50 text-slate-500 font-bold sticky top-0 z-10">
                         <tr>
                             <th className="px-6 py-4 border-b border-slate-200">DÍA</th>
                             <th className="px-6 py-4 border-b border-slate-200">FECHA</th>
@@ -147,13 +147,13 @@ export function ReportsTable({ sessions, targetHours = 8 }: ReportsTableProps) {
                                         <td className="px-6 py-4 font-medium text-slate-900">
                                             {capitalize(format(dateObj, 'EEEE', { locale: es }))}
                                         </td>
-                                        <td className="px-6 py-4 text-slate-600">
+                                        <td className="px-6 py-4 text-slate-500">
                                             {format(dateObj, 'dd/MM/yyyy')}
                                         </td>
                                         <td className="px-6 py-4 text-slate-900 font-bold">
                                             {hours.toFixed(1)}h
                                         </td>
-                                        <td className="px-6 py-4 text-slate-600">
+                                        <td className="px-6 py-4 text-slate-500">
                                             {session.breaks.length}
                                         </td>
                                         <td className="px-6 py-4">
@@ -164,7 +164,7 @@ export function ReportsTable({ sessions, targetHours = 8 }: ReportsTableProps) {
                                                         style={{ width: `${Math.min(100, percentage)}%` }}
                                                     />
                                                 </div>
-                                                <span className="text-sm text-slate-600">{percentage}%</span>
+                                                <span className="text-sm text-slate-500">{percentage}%</span>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">

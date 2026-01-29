@@ -6,7 +6,7 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="flex h-screen w-full bg-slate-50 overflow-hidden">
+        <div className="flex h-screen w-full bg-slate-50 dark:bg-black overflow-hidden">
             {/* Sidebar hidden on mobile for now, accessible via menu later */}
             <div className="hidden md:block h-full">
                 <Sidebar />

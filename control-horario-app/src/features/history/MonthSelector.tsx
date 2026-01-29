@@ -31,7 +31,7 @@ export function MonthSelector({ currentDate, onMonthChange }: MonthSelectorProps
                 <ChevronLeft className="w-5 h-5" />
             </button>
 
-            <span className="text-sm font-bold text-slate-800 uppercase min-w-[120px] text-center">
+            <span className="text-sm font-bold text-slate-500 uppercase min-w-[120px] text-center">
                 {format(currentDate, 'MMMM yyyy', { locale: es })}
             </span>
 
