@@ -61,7 +61,7 @@ export function HoursDonutChart({ workedHours, breakHours, targetHours }: HoursD
                             ))}
                         </Pie>
                         <Tooltip
-                            formatter={(value: any, name: string) => [
+                            formatter={(value: any, name: any) => [
                                 `${formatValue(value)} (${getPercentage(value)}%)`,
                                 name
                             ]}
