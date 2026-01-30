@@ -44,7 +44,7 @@ export function MonthlyAreaChart({ data }: MonthlyAreaChartProps) {
                             boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
                             fontSize: '13px'
                         }}
-                        formatter={(value: number) => [`${value.toFixed(1)}h`, 'Total Horas']}
+                        formatter={(value: any) => [`${Number(value).toFixed(1)}h`, 'Total Horas']}
                     />
                     <Area
                         type="monotone"
