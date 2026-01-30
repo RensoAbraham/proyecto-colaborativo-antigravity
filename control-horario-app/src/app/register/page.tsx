@@ -1,34 +1,49 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Clock, AlertCircle } from 'lucide-react';
+import { UserPlus } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 
-export default function LoginPage() {
+export default function RegisterPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
-    const [email, setEmail] = useState('alex@techsolutions.com');
-    const [password, setPassword] = useState('password');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [fullName, setFullName] = useState('');
     const [error, setError] = useState<string | null>(null);
 
-    const handleLogin = async (e: React.FormEvent) => {
+    const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
 
         try {
-            const { error: authError } = await supabase.auth.signInWithPassword({
+            const { data, error: authError } = await supabase.auth.signUp({
                 email,
                 password,
             });
 
             if (authError) throw authError;
 
-            router.push('/dashboard');
+            if (data.user) {
+                // Crear perfil en la base de datos
+                const { error: profileError } = await supabase
+                    .from('profiles')
+                    .insert({
+                        id: data.user.id,
+                        full_name: fullName,
+                        role: 'user',
+                    });
+
+                if (profileError) throw profileError;
+            }
+
+            // Redirigir al login con mensaje
+            router.push('/login?message=Cuenta creada. Revisa tu email para confirmar.');
         } catch (err: any) {
-            setError(err.message || 'Error al iniciar sesión');
+            setError(err.message || 'Error al crear la cuenta');
             setLoading(false);
         }
     };
@@ -38,24 +53,35 @@ export default function LoginPage() {
             <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-xl border border-slate-100">
                 <div className="flex flex-col items-center mb-8">
                     <div className="p-3 bg-blue-100 rounded-xl mb-4 text-blue-600">
-                        <Clock className="w-10 h-10" />
+                        <UserPlus className="w-10 h-10" />
                     </div>
-                    <h1 className="text-2xl font-bold text-slate-900">Bienvenido a TimeMaster</h1>
-                    <p className="text-slate-500 mt-2">Inicia sesión para registrar tu jornada</p>
+                    <h1 className="text-2xl font-bold text-slate-900">Crear Cuenta</h1>
+                    <p className="text-slate-500 mt-2">Únete a TimeMaster hoy mismo</p>
                 </div>
 
-                {error && (
-                    <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl flex items-center gap-3 text-sm animate-in fade-in slide-in-from-top-1">
-                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                        <p>{error}</p>
+                <form onSubmit={handleRegister} className="space-y-4">
+                    {error && (
+                        <div className="p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm animate-in fade-in slide-in-from-top-1">
+                            {error}
+                        </div>
+                    )}
+                    <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Nombre Completo</label>
+                        <input
+                            type="text"
+                            placeholder="Juan Pérez"
+                            required
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
+                            className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        />
                     </div>
-                )}
-
-                <form onSubmit={handleLogin} className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
                         <input
                             type="email"
+                            placeholder="juan@ejemplo.com"
+                            required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
@@ -65,6 +91,8 @@ export default function LoginPage() {
                         <label className="block text-sm font-medium text-slate-700 mb-1">Contraseña</label>
                         <input
                             type="password"
+                            placeholder="••••••••"
+                            required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
@@ -79,13 +107,13 @@ export default function LoginPage() {
                         {loading ? (
                             <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                         ) : (
-                            'Ingresar'
+                            'Registrarse'
                         )}
                     </button>
                 </form>
 
                 <div className="mt-6 text-center text-sm text-slate-400">
-                    ¿No tienes cuenta? <Link href="/register" className="text-blue-600 font-medium cursor-pointer hover:underline">Regístrate gratis</Link>
+                    ¿Ya tienes cuenta? <Link href="/login" className="text-blue-600 font-medium cursor-pointer hover:underline">Inicia sesión</Link>
                 </div>
             </div>
         </div>
