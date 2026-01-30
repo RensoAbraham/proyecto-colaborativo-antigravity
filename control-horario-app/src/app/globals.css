@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased transition-colors duration-300;
+  }
+}
+
+/* Dark mode overrides using the 'dark' class on parent (html/body) */
+.dark body {
+  @apply bg-black text-white;
+}
+
+.dark .bg-white {
+  @apply bg-slate-900 border-slate-800 text-slate-100;
+}
+
+.dark .text-slate-900 {
+  @apply text-white;
+}
+
+.dark .text-slate-500 {
+  @apply text-slate-400;
+}
+
+.dark .border-slate-200 {
+  @apply border-slate-800;
+}
+
+.dark .bg-slate-50 {
+  @apply bg-gray-950;
+}
