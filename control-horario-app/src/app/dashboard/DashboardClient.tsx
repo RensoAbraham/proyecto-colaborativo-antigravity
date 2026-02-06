@@ -9,7 +9,7 @@ import { TimeTrackingService } from '@/services/time-tracking.service';
 import { createClient } from '@/lib/supabase/client';
 
 interface UserProfile {
-    full_name: string;
+    full_name: string | null;
 }
 
 export default function DashboardClient() {

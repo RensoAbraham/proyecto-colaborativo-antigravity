@@ -103,7 +103,7 @@ export const TimeTrackingService = {
                 company_id: 'comp_default',
                 date: todayStr,
                 check_in: new Date().toISOString(),
-                status: 'active',
+                status: 'active' as const,
                 total_minutes: 0,
                 accumulated_seconds: 0,
             };
@@ -165,7 +165,7 @@ export const TimeTrackingService = {
         const { data, error } = await supabase
             .from('work_sessions')
             .update({
-                status: 'paused',
+                status: 'paused' as const,
                 accumulated_seconds: newAccumulated,
                 total_minutes: Math.floor(newAccumulated / 60)
             })
@@ -211,7 +211,7 @@ export const TimeTrackingService = {
         const { data, error } = await supabase
             .from('work_sessions')
             .update({
-                status: 'active',
+                status: 'active' as const,
                 check_in: now
             })
             .eq('id', sessionId)
@@ -249,7 +249,7 @@ export const TimeTrackingService = {
             .from('work_sessions')
             .update({
                 check_out: now.toISOString(),
-                status: 'completed',
+                status: 'completed' as const,
                 accumulated_seconds: finalAccumulated,
                 total_minutes: Math.floor(finalAccumulated / 60)
             })
