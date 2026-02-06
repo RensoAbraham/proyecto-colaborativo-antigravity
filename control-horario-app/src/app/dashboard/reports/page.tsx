@@ -55,7 +55,7 @@ export default function ReportsPage() {
 
     // Prepare data for donut chart
     const donutData = useMemo(() => {
-        const totalBreakMinutes = sessions.reduce((acc, s) => 
+        const totalBreakMinutes = sessions.reduce((acc, s) =>
             acc + s.breaks.reduce((b, br) => b + br.duration_minutes, 0), 0
         );
         return {
@@ -68,15 +68,15 @@ export default function ReportsPage() {
     // Prepare daily bar chart data - show LAST complete week (Mon-Sun, but only Mon-Fri has data)
     const dailyChartData = useMemo(() => {
         const dayNames = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
-        
+
         // Get LAST week's Monday
         const today = new Date();
         const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, ...
         const lastMondayOffset = dayOfWeek === 0 ? 6 : dayOfWeek + 6;
-        
+
         const lastMonday = new Date(today);
         lastMonday.setDate(today.getDate() - lastMondayOffset);
-        
+
         // Generate 7 days (Mon-Sun), only Mon-Fri will have data
         const weekDays = Array.from({ length: 7 }, (_, i) => {
             const date = new Date(lastMonday);
@@ -99,7 +99,7 @@ export default function ReportsPage() {
     const monthlyChartData = useMemo(() => {
         // Always return 4 weeks with proper numbering (Sem 1-4)
         const weeks: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0 };
-        
+
         sessions.forEach(session => {
             const date = parseISO(session.date);
             // Get which week of the MONTH this date falls in (1-4)
@@ -160,37 +160,37 @@ export default function ReportsPage() {
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+                    <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
                         Reportes 📊
                     </h1>
-                    <p className="text-slate-500 mt-1 text-sm sm:text-base">
+                    <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm sm:text-base">
                         Analiza tu rendimiento y productividad laboral.
                     </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
                     {/* Month/Year Selector */}
-                    <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border border-slate-200 shadow-sm">
+                    <div className="flex items-center gap-2 bg-white dark:bg-slate-800 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">
                         <Calendar className="w-4 h-4 text-slate-400" />
                         <select
                             value={selectedMonth}
                             onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-                            className="text-sm font-medium text-slate-700 bg-transparent border-none focus:outline-none cursor-pointer"
+                            className="text-sm font-medium text-slate-700 dark:text-slate-200 bg-transparent border-none focus:outline-none cursor-pointer"
                         >
                             {MONTHS.map((month, index) => (
-                                <option key={month} value={index}>{month}</option>
+                                <option key={month} value={index} className="dark:bg-slate-800">{month}</option>
                             ))}
                         </select>
                         <select
                             value={selectedYear}
                             onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                            className="text-sm font-medium text-slate-700 bg-transparent border-none focus:outline-none cursor-pointer"
+                            className="text-sm font-medium text-slate-700 dark:text-slate-200 bg-transparent border-none focus:outline-none cursor-pointer"
                         >
                             {[2024, 2025, 2026].map(year => (
-                                <option key={year} value={year}>{year}</option>
+                                <option key={year} value={year} className="dark:bg-slate-800">{year}</option>
                             ))}
                         </select>
                     </div>
-                    
+
                     {/* Export Button */}
                     <button
                         onClick={exportToCSV}
@@ -216,11 +216,11 @@ export default function ReportsPage() {
             {/* Charts Grid */}
             <div className="grid gap-6 lg:grid-cols-3">
                 {/* Donut Chart */}
-                <div className="rounded-xl border border-slate-200 bg-white p-4 sm:p-6 shadow-sm">
-                    <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-2">
+                <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 sm:p-6 shadow-sm">
+                    <h2 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white mb-2">
                         Distribución de Tiempo
                     </h2>
-                    <p className="text-xs sm:text-sm text-slate-500 mb-4">
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-4">
                         Horas trabajadas vs pausas del período
                     </p>
                     <div className="h-[280px]">
@@ -233,11 +233,11 @@ export default function ReportsPage() {
                 </div>
 
                 {/* Bar Chart */}
-                <div className="lg:col-span-2 rounded-xl border border-slate-200 bg-white p-4 sm:p-6 shadow-sm">
-                    <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-2">
+                <div className="lg:col-span-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 sm:p-6 shadow-sm">
+                    <h2 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white mb-2">
                         Horas por Día
                     </h2>
-                    <p className="text-xs sm:text-sm text-slate-500 mb-4">
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-4">
                         Semana actual - Meta: {TARGET_HOURS}h diarias
                     </p>
                     <div className="h-[280px]">
@@ -247,11 +247,11 @@ export default function ReportsPage() {
             </div>
 
             {/* Area Chart - Monthly Trend */}
-            <div className="rounded-xl border border-slate-200 bg-white p-4 sm:p-6 shadow-sm">
-                <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-2">
+            <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 sm:p-6 shadow-sm">
+                <h2 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white mb-2">
                     Tendencia Mensual
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-500 mb-4">
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-4">
                     Total de horas trabajadas por semana en {MONTHS[selectedMonth]}
                 </p>
                 <div className="h-[300px]">
@@ -261,7 +261,7 @@ export default function ReportsPage() {
 
             {/* Table */}
             <div>
-                <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4">
+                <h2 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white mb-4">
                     Detalle de Jornadas
                 </h2>
                 <ReportsTable sessions={sessions} targetHours={TARGET_HOURS} />

@@ -1,6 +1,7 @@
 'use client';
 
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { useTheme } from '@/context/ThemeContext';
 
 interface MonthlyData {
     week: string;
@@ -12,6 +13,9 @@ interface MonthlyAreaChartProps {
 }
 
 export function MonthlyAreaChart({ data }: MonthlyAreaChartProps) {
+    const { theme } = useTheme();
+    const isDark = theme === 'dark';
+
     return (
         <div className="h-full w-full min-h-[280px] sm:min-h-[320px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -39,10 +43,18 @@ export function MonthlyAreaChart({ data }: MonthlyAreaChartProps) {
                     />
                     <Tooltip
                         contentStyle={{
+                            backgroundColor: isDark ? '#1e293b' : '#ffffff',
                             borderRadius: '8px',
-                            border: 'none',
+                            border: isDark ? '1px solid #334155' : 'none',
                             boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
-                            fontSize: '13px'
+                            fontSize: '13px',
+                            color: isDark ? '#f8fafc' : '#0f172a'
+                        }}
+                        itemStyle={{
+                            color: isDark ? '#f8fafc' : '#0f172a'
+                        }}
+                        labelStyle={{
+                            color: isDark ? '#cbd5e1' : '#64748b'
                         }}
                         formatter={(value: any) => [`${Number(value).toFixed(1)}h`, 'Total Horas']}
                     />

@@ -19,7 +19,7 @@ export function ToggleSwitch({ checked, onChange, label, disabled = false }: Tog
                     disabled={disabled}
                 />
                 <div
-                    className={`block w-11 h-6 rounded-full transition-colors duration-200 ${checked ? 'bg-blue-600' : 'bg-slate-200'
+                    className={`block w-11 h-6 rounded-full transition-colors duration-200 ${checked ? 'bg-blue-600' : 'bg-slate-200 dark:bg-slate-700'
                         }`}
                 ></div>
                 <div

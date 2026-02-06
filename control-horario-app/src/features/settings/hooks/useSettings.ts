@@ -58,13 +58,13 @@ export function useSettings() {
             try {
                 const parsed = JSON.parse(stored);
                 setSettings({ ...DEFAULT_SETTINGS, ...parsed });
-                
-                // Aplicar tema inicial
-                if (parsed.preferences?.theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                }
+
+                // Aplicar tema inicial - REMOVED: Now handled by ThemeContext
+                // if (parsed.preferences?.theme === 'dark') {
+                //     document.documentElement.classList.add('dark');
+                // } else {
+                //     document.documentElement.classList.remove('dark');
+                // }
             } catch (e) {
                 console.error('Error parsing settings', e);
             }
@@ -81,14 +81,10 @@ export function useSettings() {
         setSettings(updated);
         localStorage.setItem('timemaster_settings', JSON.stringify(updated));
 
-        // Efectos secundarios
-        if (section === 'preferences' && 'theme' in newValues) {
-            if (newValues.theme === 'dark') {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        }
+        // Efectos secundarios - REMOVED: Now handled by ThemeContext
+        // if (section === 'preferences' && 'theme' in newValues) {
+        //    ...
+        // }
     };
 
     // Actualizar perfil
@@ -114,9 +110,9 @@ export function useSettings() {
     // Toggle preferencias
     const togglePreference = (key: keyof UserSettings['preferences']) => {
         if (key === 'theme') {
-             // Toggle específico para tema
-             const newTheme = settings.preferences.theme === 'dark' ? 'light' : 'dark';
-             updateSettings('preferences', { theme: newTheme });
+            // Toggle específico para tema
+            const newTheme = settings.preferences.theme === 'dark' ? 'light' : 'dark';
+            updateSettings('preferences', { theme: newTheme });
         } else if (typeof settings.preferences[key] === 'boolean') {
             updateSettings('preferences', { [key]: !settings.preferences[key] });
         }
