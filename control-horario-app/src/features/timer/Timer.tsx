@@ -197,7 +197,7 @@ export function Timer({ initialSession, onSessionChange }: TimerProps) {
                     <div className="mt-6 flex items-center gap-2 text-sm text-slate-400">
                         <Clock className="w-4 h-4" />
                         <span>
-                            Entrada: {new Date(session.check_in).toLocaleTimeString()}
+                            Entrada: {session.check_in ? new Date(session.check_in).toLocaleTimeString() : '--:--:--'}
                         </span>
                         {session.status === 'paused' && (
                             <span className="ml-2 text-amber-500 font-medium">

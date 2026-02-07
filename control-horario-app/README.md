@@ -1,36 +1,137 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Control Horario App - TimeMaster
 
-## Getting Started
+Aplicación de control de jornada laboral construida con Next.js, React, Tailwind CSS y Supabase.
 
-First, run the development server:
+## 🚀 Getting Started
+
+### Requisitos Previos
+- Node.js 18+
+- npm o yarn
+- Cuenta de Supabase configurada
+
+### Instalación
 
 ```bash
+# Instalar dependencias
+npm install
+
+# Configurar variables de entorno
+cp .env.example .env.local
+# Editar .env.local con tus credenciales de Supabase
+
+# Ejecutar en desarrollo
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🎨 Skills de Desarrollo
 
-## Learn More
+Este proyecto utiliza **Skills** (estándares de desarrollo) ubicadas en `.agent/skills/` para mantener consistencia y calidad en el código. A continuación se describen las skills disponibles:
 
-To learn more about Next.js, take a look at the following resources:
+### 📦 rpsfot-ui
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Ubicación:** `.agent/skills/rpsfot-ui/SKILL.md`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Estándares de desarrollo UI para el proyecto usando React y Tailwind CSS.
 
-## Deploy on Vercel
+| Categoría | Directrices |
+|-----------|-------------|
+| **Stack** | React (solo componentes funcionales y Hooks), Tailwind CSS |
+| **Colores Base** | Escala Slate/Zinc para fondos, Indigo/Violet como acentos |
+| **Componentes** | Bordes redondeados (`rounded-lg`), estados hover/active/focus definidos |
+| **Responsive** | Mobile First, uso de breakpoints `sm:`, `md:`, `lg:` |
+| **Accesibilidad** | Elementos accesibles por teclado, contraste adecuado, HTML semántico |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Tema Antigravity:**
+- Fondo Principal: `bg-slate-900`
+- Paneles/Tarjetas: `bg-slate-800`
+- Texto Principal: `text-slate-50`
+- Texto Secundario: `text-slate-400`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+### ⚛️ rpsoft-react
+
+**Ubicación:** `.agent/skills/rpsoft-react/SKILL.md`
+
+Reglas y buenas prácticas obligatorias para desarrollo en React.
+
+| Categoría | Reglas |
+|-----------|--------|
+| **Componentes** | Solo funcionales, una responsabilidad, pequeños y reutilizables |
+| **Hooks** | No en condicionales ni loops, declarar al inicio del componente |
+| **Estado** | No abusar de useState, preferir estado derivado, extraer lógica a hooks custom |
+| **Renderizado** | Evitar renders innecesarios, no usar `index` como key en listas dinámicas |
+| **Estructura** | `components/`, `hooks/`, `contexts/`, `services/`, `utils/` |
+
+**Ejemplo de componente:**
+```jsx
+export function UserCard({ user }) {
+  return <div>{user.name}</div>
+}
+```
+
+---
+
+### 🗄️ rpsoft-supabase
+
+**Ubicación:** `.agent/skills/rpsoft-supabase/SKILL.md`
+
+Estándar RPSoft para trabajar con Supabase (Auth + Database + RLS).
+
+| Categoría | Estándar |
+|-----------|----------|
+| **Auth** | Supabase Auth integrado |
+| **Database** | PostgreSQL con Supabase |
+| **Seguridad** | Row Level Security (RLS) obligatoria |
+| **Políticas** | Políticas por usuario para evitar filtración de datos |
+| **Cliente** | Ubicar siempre en `src/lib/supabaseClient.ts` |
+
+**Configuración del cliente:**
+```typescript
+import { createClient } from "@supabase/supabase-js";
+
+export const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+```
+
+---
+
+## 📁 Estructura del Proyecto
+
+```
+control-horario-app/
+├── .agent/skills/       # Skills de desarrollo
+├── docs/                # Documentación técnica
+├── db_scripts/          # Scripts de base de datos
+├── public/              # Assets estáticos
+├── src/
+│   ├── app/             # Rutas Next.js App Router
+│   ├── components/      # Componentes de UI
+│   ├── features/        # Módulos por funcionalidad
+│   ├── lib/             # Librerías y configuración
+│   ├── services/        # Servicios de datos
+│   └── types/           # Tipos TypeScript
+└── middleware.ts        # Middleware de autenticación
+```
+
+---
+
+## 📚 Documentación Adicional
+
+- [Estándares de Base de Datos](docs/db-standards.md)
+- [Registro de Debugging](docs/debug-log.md)
+
+---
+
+## 🔗 Links Útiles
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Supabase Documentation](https://supabase.com/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+

@@ -33,10 +33,10 @@ export default function HistoryPage() {
     return (
         <div className="space-y-6 animate-in fade-in duration-500">
             <div>
-                <h1 className="text-2xl font-bold tracking-tight text-slate-900 uppercase">
+                <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white uppercase">
                     Asistencia Semanal
                 </h1>
-                <p className="text-slate-500 mt-1">
+                <p className="text-slate-500 dark:text-slate-400 mt-1">
                     Historial de jornadas y asistencias.
                 </p>
             </div>

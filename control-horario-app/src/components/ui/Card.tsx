@@ -7,7 +7,7 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
 const Card = forwardRef<HTMLDivElement, CardProps>(
     ({ className = '', padding = 'md', children, ...props }, ref) => {
 
-        const baseStyles = 'bg-slate-800 border border-slate-700 rounded-xl shadow-sm overflow-hidden text-slate-50';
+        const baseStyles = 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm overflow-hidden text-slate-900 dark:text-slate-50 transition-colors duration-200';
 
         const paddings = {
             none: '',

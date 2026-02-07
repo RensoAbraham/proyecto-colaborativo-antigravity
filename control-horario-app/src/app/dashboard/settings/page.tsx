@@ -18,8 +18,11 @@ import { ToggleSwitch } from '@/features/settings/components/ToggleSwitch';
 import { useSettings } from '@/features/settings/hooks/useSettings';
 import { useState, useRef } from 'react';
 
+import { useTheme } from '@/context/ThemeContext';
+
 export default function SettingsPage() {
     const { settings, loading, updateProfile, uploadAvatar, toggleNotification, togglePreference, changeLanguage } = useSettings();
+    const { theme, toggleTheme } = useTheme();
     const [saved, setSaved] = useState(false);
 
     // Referencia para el input de archivo
@@ -63,7 +66,7 @@ export default function SettingsPage() {
             );
         }
         return (
-            <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-blue-600 bg-slate-100">
+            <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-blue-600 dark:text-blue-400 bg-slate-100 dark:bg-slate-800">
                 {settings.profile.name.charAt(0)}
             </div>
         );
@@ -80,8 +83,8 @@ export default function SettingsPage() {
                 <button
                     onClick={handleSave}
                     className={`flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-all ${saved
-                        ? 'bg-green-600 text-white shadow-lg shadow-green-200'
-                        : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200'
+                        ? 'bg-green-600 text-white shadow-lg shadow-green-200 dark:shadow-green-900/20'
+                        : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200 dark:shadow-blue-900/20'
                         }`}
                 >
                     {saved ? (
@@ -112,13 +115,13 @@ export default function SettingsPage() {
                         <div className="flex flex-col sm:flex-row gap-6 items-start">
                             <div className="flex flex-col items-center gap-3">
                                 <div className="relative group cursor-pointer" onClick={handleAvatarClick}>
-                                    <div className="w-24 h-24 rounded-full border-4 border-white shadow-md overflow-hidden flex items-center justify-center">
+                                    <div className="w-24 h-24 rounded-full border-4 border-white dark:border-slate-800 shadow-md overflow-hidden flex items-center justify-center">
                                         {renderAvatar()}
                                     </div>
                                     <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                         <Camera size={24} className="text-white" />
                                     </div>
-                                    <button className="absolute bottom-0 right-0 bg-white border border-slate-200 p-1.5 rounded-full shadow-sm text-slate-600 hover:text-blue-600 z-10">
+                                    <button className="absolute bottom-0 right-0 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-1.5 rounded-full shadow-sm text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 z-10">
                                         <User size={14} />
                                     </button>
                                 </div>
@@ -176,12 +179,12 @@ export default function SettingsPage() {
                             {/* ... (mantener igual el contenido interno, solo asegúrate de importar ToggleSwitch) */}
                             <div className="flex items-center justify-between py-2">
                                 <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                                    <div className="p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg">
                                         <Mail size={18} />
                                     </div>
                                     <div>
-                                        <p className="font-medium text-slate-900">Notificaciones por Email</p>
-                                        <p className="text-sm text-slate-500">Recibe actualizaciones importantes en tu correo.</p>
+                                        <p className="font-medium text-slate-900 dark:text-white">Notificaciones por Email</p>
+                                        <p className="text-sm text-slate-500 dark:text-slate-400">Recibe actualizaciones importantes en tu correo.</p>
                                     </div>
                                 </div>
                                 <ToggleSwitch
@@ -192,12 +195,12 @@ export default function SettingsPage() {
 
                             <div className="flex items-center justify-between py-2 pt-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-purple-50 text-purple-600 rounded-lg">
+                                    <div className="p-2 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-lg">
                                         <Smartphone size={18} />
                                     </div>
                                     <div>
-                                        <p className="font-medium text-slate-900">Notificaciones Push</p>
-                                        <p className="text-sm text-slate-500">Notificaciones en tiempo real en tu navegador.</p>
+                                        <p className="font-medium text-slate-900 dark:text-white">Notificaciones Push</p>
+                                        <p className="text-sm text-slate-500 dark:text-slate-400">Notificaciones en tiempo real en tu navegador.</p>
                                     </div>
                                 </div>
                                 <ToggleSwitch
@@ -208,12 +211,12 @@ export default function SettingsPage() {
 
                             <div className="flex items-center justify-between py-2 pt-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
+                                    <div className="p-2 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 rounded-lg">
                                         <Layout size={18} />
                                     </div>
                                     <div>
-                                        <p className="font-medium text-slate-900">Resumen Semanal</p>
-                                        <p className="text-sm text-slate-500">Envía un reporte de productividad cada lunes.</p>
+                                        <p className="font-medium text-slate-900 dark:text-white">Resumen Semanal</p>
+                                        <p className="text-sm text-slate-500 dark:text-slate-400">Envía un reporte de productividad cada lunes.</p>
                                     </div>
                                 </div>
                                 <ToggleSwitch
@@ -237,19 +240,18 @@ export default function SettingsPage() {
                     >
                         <div className="space-y-5">
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2 text-slate-500">
+                                <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
                                     <Moon size={16} />
                                     <span className="font-medium">Modo Oscuro</span>
                                 </div>
                                 <ToggleSwitch
-                                    checked={settings.preferences.theme === 'dark'}
-                                    onChange={() => togglePreference('theme')}
-                                    label={settings.preferences.theme === 'dark' ? 'On' : 'Off'}
+                                    checked={theme === 'dark'}
+                                    onChange={toggleTheme}
                                 />
                             </div>
 
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2 text-slate-500">
+                                <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
                                     <Layout size={16} />
                                     <span className="font-medium">Modo Compacto</span>
                                 </div>
@@ -260,18 +262,17 @@ export default function SettingsPage() {
                             </div>
 
                             <div>
-                                <div className="flex items-center gap-2 text-slate-500 mb-2">
+                                <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 mb-2">
                                     <Globe size={16} />
                                     <span className="font-medium">Idioma</span>
                                 </div>
                                 <select
-                                    className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-blue-100 outline-none text-sm transition-colors"
+                                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/50 outline-none text-sm transition-colors text-slate-900 dark:text-white"
                                     value={settings.preferences.language}
                                     onChange={(e) => changeLanguage(e.target.value as 'es' | 'en' | 'pt')}
                                 >
                                     <option value="es">Español (Latam)</option>
                                     <option value="en">English (US)</option>
-                                    <option value="pt">Português</option>
                                 </select>
                             </div>
                         </div>
@@ -280,14 +281,11 @@ export default function SettingsPage() {
                     {/* Seguridad (mantener igual) */}
                     <SettingsCard title="Seguridad" icon={<Shield size={20} />} className="h-fit">
                         <div className="space-y-4">
-                            <button className="w-full py-2 px-4 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors text-sm font-medium flex items-center justify-center gap-2">
+                            <button className="w-full py-2 px-4 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm font-medium flex items-center justify-center gap-2">
                                 Cambiar Contraseña
                             </button>
-                            <button className="w-full py-2 px-4 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors text-sm font-medium flex items-center justify-center gap-2">
-                                Activar 2FA
-                            </button>
-                            <div className="pt-2 border-t border-slate-100">
-                                <button className="w-full py-2 px-4 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-sm font-medium">
+                            <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                                <button className="w-full py-2 px-4 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors text-sm font-medium">
                                     Cerrar Sesión en todos los dispositivos
                                 </button>
                             </div>

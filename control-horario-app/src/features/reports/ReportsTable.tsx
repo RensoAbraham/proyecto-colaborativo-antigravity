@@ -51,10 +51,10 @@ export function ReportsTable({ sessions, targetHours = 8 }: ReportsTableProps) {
 
     const getPerformanceStatus = (hours: number) => {
         const percentage = (hours / targetHours) * 100;
-        if (percentage >= 100) return { text: 'Excelente', color: 'text-green-600 bg-green-50 ring-1 ring-green-500/20' };
-        if (percentage >= 80) return { text: 'Bueno', color: 'text-blue-600 bg-blue-50 ring-1 ring-blue-500/20' };
-        if (percentage >= 60) return { text: 'Regular', color: 'text-amber-600 bg-amber-50 ring-1 ring-amber-500/20' };
-        return { text: 'Bajo', color: 'text-red-600 bg-red-50 ring-1 ring-red-500/20' };
+        if (percentage >= 100) return { text: 'Excelente', color: 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 ring-1 ring-green-500/20 dark:ring-green-400/20' };
+        if (percentage >= 80) return { text: 'Bueno', color: 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 ring-1 ring-blue-500/20 dark:ring-blue-400/20' };
+        if (percentage >= 60) return { text: 'Regular', color: 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 ring-1 ring-amber-500/20 dark:ring-amber-400/20' };
+        return { text: 'Bajo', color: 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 ring-1 ring-red-500/20 dark:ring-red-400/20' };
     };
 
     // Mobile card view
@@ -64,30 +64,30 @@ export function ReportsTable({ sessions, targetHours = 8 }: ReportsTableProps) {
         const performance = getPerformanceStatus(hours);
 
         return (
-            <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+            <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 shadow-sm">
                 <div className="flex justify-between items-start mb-3">
                     <div>
-                        <p className="font-semibold text-slate-900">
+                        <p className="font-semibold text-slate-900 dark:text-white">
                             {capitalize(format(dateObj, 'EEEE', { locale: es }))}
                         </p>
-                        <p className="text-sm text-slate-500">{format(dateObj, 'dd/MM/yyyy')}</p>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">{format(dateObj, 'dd/MM/yyyy')}</p>
                     </div>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${performance.color}`}>
                         {performance.text}
                     </span>
                 </div>
                 <div className="grid grid-cols-3 gap-2 text-center">
-                    <div className="bg-slate-50 rounded-lg p-2">
-                        <p className="text-xs text-slate-500">Horas</p>
-                        <p className="font-bold text-slate-700">{hours.toFixed(1)}h</p>
+                    <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-2">
+                        <p className="text-xs text-slate-500 dark:text-slate-400">Horas</p>
+                        <p className="font-bold text-slate-700 dark:text-slate-300">{hours.toFixed(1)}h</p>
                     </div>
-                    <div className="bg-slate-50 rounded-lg p-2">
-                        <p className="text-xs text-slate-500">Pausas</p>
-                        <p className="font-bold text-slate-900">{session.breaks.length}</p>
+                    <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-2">
+                        <p className="text-xs text-slate-500 dark:text-slate-400">Pausas</p>
+                        <p className="font-bold text-slate-900 dark:text-white">{session.breaks.length}</p>
                     </div>
-                    <div className="bg-slate-50 rounded-lg p-2">
-                        <p className="text-xs text-slate-500">Meta</p>
-                        <p className="font-bold text-slate-900">{Math.round((hours / targetHours) * 100)}%</p>
+                    <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-2">
+                        <p className="text-xs text-slate-500 dark:text-slate-400">Meta</p>
+                        <p className="font-bold text-slate-900 dark:text-white">{Math.round((hours / targetHours) * 100)}%</p>
                     </div>
                 </div>
             </div>
@@ -114,24 +114,24 @@ export function ReportsTable({ sessions, targetHours = 8 }: ReportsTableProps) {
 
             {/* Desktop view - table */}
             <div
-                className="reports-table-scroll hidden md:block w-full overflow-auto rounded-lg border border-slate-200 shadow-sm bg-white max-h-[400px]"
+                className="reports-table-scroll hidden md:block w-full overflow-auto rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm bg-white dark:bg-slate-800 max-h-[400px]"
                 style={scrollContainerStyle}
             >
                 <table className="w-full text-left text-sm">
-                    <thead className="bg-slate-50 text-slate-500 font-bold sticky top-0 z-10">
+                    <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 font-bold sticky top-0 z-10">
                         <tr>
-                            <th className="px-6 py-4 border-b border-slate-200">DÍA</th>
-                            <th className="px-6 py-4 border-b border-slate-200">FECHA</th>
-                            <th className="px-6 py-4 border-b border-slate-200">HORAS</th>
-                            <th className="px-6 py-4 border-b border-slate-200">PAUSAS</th>
-                            <th className="px-6 py-4 border-b border-slate-200">% META</th>
-                            <th className="px-6 py-4 border-b border-slate-200">RENDIMIENTO</th>
+                            <th className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">DÍA</th>
+                            <th className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">FECHA</th>
+                            <th className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">HORAS</th>
+                            <th className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">PAUSAS</th>
+                            <th className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">% META</th>
+                            <th className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">RENDIMIENTO</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-slate-100 dark:divide-slate-700/50">
                         {sessions.length === 0 ? (
                             <tr>
-                                <td colSpan={6} className="px-6 py-8 text-center text-slate-400">
+                                <td colSpan={6} className="px-6 py-8 text-center text-slate-400 dark:text-slate-500">
                                     No hay registros para este período.
                                 </td>
                             </tr>
@@ -143,28 +143,28 @@ export function ReportsTable({ sessions, targetHours = 8 }: ReportsTableProps) {
                                 const percentage = Math.round((hours / targetHours) * 100);
 
                                 return (
-                                    <tr key={session.id} className="hover:bg-slate-50 transition-colors">
-                                        <td className="px-6 py-4 font-medium text-slate-900">
+                                    <tr key={session.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                        <td className="px-6 py-4 font-medium text-slate-900 dark:text-white">
                                             {capitalize(format(dateObj, 'EEEE', { locale: es }))}
                                         </td>
-                                        <td className="px-6 py-4 text-slate-500">
+                                        <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
                                             {format(dateObj, 'dd/MM/yyyy')}
                                         </td>
-                                        <td className="px-6 py-4 text-slate-900 font-bold">
+                                        <td className="px-6 py-4 text-slate-900 dark:text-white font-bold">
                                             {hours.toFixed(1)}h
                                         </td>
-                                        <td className="px-6 py-4 text-slate-500">
+                                        <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
                                             {session.breaks.length}
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-2">
-                                                <div className="w-16 h-2 bg-slate-200 rounded-full overflow-hidden">
+                                                <div className="w-16 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                                                     <div
                                                         className={`h-full rounded-full ${percentage >= 100 ? 'bg-green-500' : percentage >= 80 ? 'bg-blue-500' : 'bg-amber-500'}`}
                                                         style={{ width: `${Math.min(100, percentage)}%` }}
                                                     />
                                                 </div>
-                                                <span className="text-sm text-slate-500">{percentage}%</span>
+                                                <span className="text-sm text-slate-500 dark:text-slate-400">{percentage}%</span>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">

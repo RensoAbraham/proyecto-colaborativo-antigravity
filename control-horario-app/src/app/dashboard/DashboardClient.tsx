@@ -76,20 +76,36 @@ export default function DashboardClient() {
     useEffect(() => {
         let interval: NodeJS.Timeout;
 
-        if (session?.status === 'active' && session.check_in) {
-            interval = setInterval(() => {
-                const start = new Date(session.check_in).getTime();
-                const now = new Date().getTime();
-                // Calculate break duration
-                const totalBreaksMs = session.breaks?.reduce((acc: number, b: any) => {
-                    if (b.break_end && b.break_start) {
-                        return acc + (new Date(b.break_end).getTime() - new Date(b.break_start).getTime());
-                    }
-                    return acc;
-                }, 0) || 0;
+        const updateTimer = () => {
+            if (!session || !session.check_in) {
+                setElapsedSeconds(0);
+                return;
+            }
 
-                setElapsedSeconds(Math.floor((now - start - totalBreaksMs) / 1000));
-            }, 1000);
+            const start = new Date(session.check_in).getTime();
+            const now = new Date().getTime();
+
+            // Calculate break duration
+            const totalBreaksMs = session.breaks?.reduce((acc: number, b: any) => {
+                if (b.break_end && b.break_start) {
+                    return acc + (new Date(b.break_end).getTime() - new Date(b.break_start).getTime());
+                }
+                // If currently paused, add current break duration so far to the deduction
+                // effectively freezing the "worked" timer
+                if (!b.break_end && b.break_start && session.status === 'paused') {
+                    return acc + (now - new Date(b.break_start).getTime());
+                }
+                return acc;
+            }, 0) || 0;
+
+            setElapsedSeconds(Math.floor((now - start - totalBreaksMs) / 1000));
+        };
+
+        if (session?.status === 'active') {
+            updateTimer(); // Initial update
+            interval = setInterval(updateTimer, 1000);
+        } else if (session?.status === 'paused') {
+            updateTimer(); // Update once to show correct frozen time
         } else {
             setElapsedSeconds(0);
         }
@@ -130,22 +146,97 @@ export default function DashboardClient() {
         }
     };
 
+    const handlePause = async () => {
+        if (!session) return;
+
+        try {
+            // 1. Create break record
+            const { error: breakError } = await supabase
+                .from('breaks')
+                .insert({
+                    work_session_id: session.id,
+                    break_start: new Date().toISOString()
+                });
+
+            if (breakError) throw breakError;
+
+            // 2. Update session status
+            const { error: sessionError } = await supabase
+                .from('work_sessions')
+                .update({ status: 'paused' })
+                .eq('id', session.id);
+
+            if (sessionError) throw sessionError;
+
+            // 3. Update local state
+            fetchData();
+
+        } catch (error) {
+            console.error('Error pausing session:', error);
+        }
+    };
+
+    const handleResume = async () => {
+        if (!session) return;
+
+        try {
+            // 1. Find open break
+            const { data: openBreak, error: findError } = await supabase
+                .from('breaks')
+                .select('id')
+                .eq('work_session_id', session.id)
+                .is('break_end', null)
+                .single();
+
+            if (findError) throw findError;
+
+            if (openBreak) {
+                // 2. Close break
+                const { error: updateBreakError } = await supabase
+                    .from('breaks')
+                    .update({ break_end: new Date().toISOString() })
+                    .eq('id', openBreak.id);
+
+                if (updateBreakError) throw updateBreakError;
+            }
+
+            // 3. Update session status
+            const { error: sessionError } = await supabase
+                .from('work_sessions')
+                .update({ status: 'active' })
+                .eq('id', session.id);
+
+            if (sessionError) throw sessionError;
+
+            fetchData();
+
+        } catch (error) {
+            console.error('Error resuming session:', error);
+        }
+    };
+
     const handleEndDay = async () => {
         if (!session) return;
 
         try {
             const now = new Date();
-            // Calculate final total minutes
-            // Simple calc for MVP
             const start = new Date(session.check_in).getTime();
             const end = now.getTime();
             const totalBreaksMs = session.breaks?.reduce((acc: number, b: any) => {
-                // Logic for ended breaks
                 if (b.break_end) return acc + (new Date(b.break_end).getTime() - new Date(b.break_start).getTime());
+                if (!b.break_end && b.break_start) return acc + (end - new Date(b.break_start).getTime());
                 return acc;
             }, 0) || 0;
 
             const totalMinutes = Math.floor((end - start - totalBreaksMs) / 60000);
+
+            if (session.status === 'paused') {
+                await supabase
+                    .from('breaks')
+                    .update({ break_end: now.toISOString() })
+                    .eq('work_session_id', session.id)
+                    .is('break_end', null);
+            }
 
             const { error } = await supabase
                 .from('work_sessions')
@@ -171,9 +262,9 @@ export default function DashboardClient() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-slate-900 text-slate-50">
+            <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-50">
                 <div className="animate-pulse flex flex-col items-center">
-                    <Clock className="w-10 h-10 mb-4 text-indigo-500" />
+                    <Clock className="w-10 h-10 mb-4 text-indigo-600 dark:text-indigo-500" />
                     <p>Cargando tu espacio...</p>
                 </div>
             </div>
@@ -181,12 +272,12 @@ export default function DashboardClient() {
     }
 
     return (
-        <div className="min-h-screen bg-slate-900 text-slate-50 p-6">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-50 p-6">
             {/* Header */}
             <header className="flex justify-between items-center mb-10 max-w-5xl mx-auto">
                 <div>
                     <h1 className="text-2xl font-bold">Hola, {profile?.full_name?.split(' ')[0] || 'Usuario'}</h1>
-                    <p className="text-slate-400 text-sm flex items-center gap-2 mt-1">
+                    <p className="text-slate-500 dark:text-slate-400 text-sm flex items-center gap-2 mt-1">
                         <Calendar className="w-4 h-4" />
                         {new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}
                     </p>
@@ -199,15 +290,18 @@ export default function DashboardClient() {
 
             <main className="max-w-xl mx-auto space-y-8">
                 {/* Main Timer Card */}
-                <Card className="text-center bg-slate-800 border-slate-700" padding="lg">
+                <Card className="text-center bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700" padding="lg">
                     <div className="mb-6">
-                        <h2 className="text-slate-400 uppercase text-xs font-bold tracking-wider mb-2">
+                        <h2 className="text-slate-500 dark:text-slate-400 uppercase text-xs font-bold tracking-wider mb-2">
                             {session?.status === 'active' ? 'Jornada en Curso' :
                                 session?.status === 'paused' ? 'En Pausa' : 'Sin Jornada Activa'}
                         </h2>
-                        <div className={`text-6xl font-mono font-bold tabular-nums tracking-tight
-                    ${session?.status === 'active' ? 'text-indigo-400' :
-                                session?.status === 'paused' ? 'text-yellow-400' : 'text-slate-600'}
+                        <div className={`text-6xl font-mono font-bold tabular-nums tracking-tight transition-all duration-500
+                    ${session?.status === 'active'
+                                ? 'text-indigo-600 dark:text-indigo-400 dark:drop-shadow-[0_0_15px_rgba(129,140,248,0.5)]'
+                                : session?.status === 'paused'
+                                    ? 'text-amber-500 dark:text-amber-400'
+                                    : 'text-slate-400 dark:text-slate-600'}
                 `}>
                             {formatTime(elapsedSeconds)}
                         </div>
@@ -215,7 +309,7 @@ export default function DashboardClient() {
 
                     <div className="flex gap-4 justify-center">
                         {!session && (
-                            <Button size="lg" onClick={handleStartDay} className="w-full max-w-xs shadow-indigo-900/20 shadow-xl">
+                            <Button size="lg" onClick={handleStartDay} className="w-full max-w-xs shadow-indigo-900/20 shadow-xl dark:shadow-indigo-500/20 transition-all hover:scale-105">
                                 <Play className="w-5 h-5 mr-2 fill-current" />
                                 Iniciar Jornada
                             </Button>
@@ -223,11 +317,24 @@ export default function DashboardClient() {
 
                         {session?.status === 'active' && (
                             <>
-                                <Button variant="secondary" onClick={() => {/* Pause logic to be implemented */ }} disabled>
+                                <Button variant="secondary" onClick={handlePause} className="shadow-lg hover:shadow-xl transition-all dark:bg-slate-700 dark:text-white dark:hover:bg-slate-600">
                                     <Pause className="w-5 h-5 mr-2 fill-current" />
                                     Pausar
                                 </Button>
-                                <Button variant="danger" onClick={handleEndDay}>
+                                <Button variant="danger" onClick={handleEndDay} className="shadow-lg hover:shadow-xl transition-all">
+                                    <Square className="w-5 h-5 mr-2 fill-current" />
+                                    Terminar
+                                </Button>
+                            </>
+                        )}
+
+                        {session?.status === 'paused' && (
+                            <>
+                                <Button variant="primary" onClick={handleResume} className="bg-amber-500 hover:bg-amber-600 text-white shadow-lg shadow-amber-500/20 transition-all">
+                                    <Play className="w-5 h-5 mr-2 fill-current" />
+                                    Reanudar
+                                </Button>
+                                <Button variant="danger" onClick={handleEndDay} className="shadow-lg hover:shadow-xl transition-all">
                                     <Square className="w-5 h-5 mr-2 fill-current" />
                                     Terminar
                                 </Button>
@@ -238,17 +345,20 @@ export default function DashboardClient() {
 
                 {/* Info Grid */}
                 <div className="grid grid-cols-2 gap-4">
-                    <Card padding="md" className="flex flex-col items-center justify-center border-slate-700/50 bg-slate-800/50">
-                        <span className="text-slate-400 text-sm mb-1">Inicio</span>
-                        <span className="text-xl font-mono font-medium">
+                    <Card padding="md" className="flex flex-col items-center justify-center border-slate-200 dark:border-slate-700/50 bg-white dark:bg-slate-800 shadow-sm hover:shadow-md transition-shadow rounded-xl">
+                        <span className="text-slate-500 dark:text-slate-400 text-sm mb-1">Inicio</span>
+                        <span className="text-xl font-mono font-medium text-slate-900 dark:text-white">
                             {session?.check_in ? new Date(session.check_in).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--'}
                         </span>
                     </Card>
-                    <Card padding="md" className="flex flex-col items-center justify-center border-slate-700/50 bg-slate-800/50">
-                        <span className="text-slate-400 text-sm mb-1">Estado</span>
-                        <span className="text-xl font-medium capitalize text-slate-200">
-                            {session?.status === 'active' ? 'Trabajando' : 'Descanso'}
-                        </span>
+                    <Card padding="md" className="flex flex-col items-center justify-center border-slate-200 dark:border-slate-700/50 bg-white dark:bg-slate-800 shadow-sm hover:shadow-md transition-shadow rounded-xl">
+                        <span className="text-slate-500 dark:text-slate-400 text-sm mb-1">Estado</span>
+                        <div className={`px-3 py-1 rounded-full text-sm font-medium ${session?.status === 'active' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
+                            session?.status === 'paused' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' :
+                                'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'
+                            }`}>
+                            {session?.status === 'active' ? 'Trabajando' : session?.status === 'paused' ? 'En Pausa' : 'Inactivo'}
+                        </div>
                     </Card>
                 </div>
             </main>
